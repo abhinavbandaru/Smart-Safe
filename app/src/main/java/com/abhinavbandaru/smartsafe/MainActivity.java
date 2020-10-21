@@ -1,6 +1,7 @@
 package com.abhinavbandaru.smartsafe;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,10 +23,15 @@ public class MainActivity extends AppCompatActivity {
     SignInButton googleSignInButton;
     GoogleSignInClient mGoogleSignInClient;
     private int RC_SIGN_IN = 0;
+    String[] permissions = {"android.permission.READ_EXTERNAL_STORAGE",
+            "android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.ACCESS_FINE_LOCATION",
+            "android.permission.SEND_SMS", "android.permission.INTERNET",
+            "android.permission.ACCESS_COARSE_LOCATION",};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        checkPermission();
         googleSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,6 +47,10 @@ public class MainActivity extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
+
+    public void checkPermission(){
+        ActivityCompat.requestPermissions(this, this.permissions, 1);
     }
 
     @Override

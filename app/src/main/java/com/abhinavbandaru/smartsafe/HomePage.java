@@ -64,8 +64,6 @@ public class HomePage extends AppCompatActivity {
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-
-        mediaPlayer = MediaPlayer.create(this, R.raw.siren);
         audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
         googleName = findViewById(R.id.google_name);
         googleEmail = findViewById(R.id.google_email);
@@ -139,6 +137,7 @@ public class HomePage extends AppCompatActivity {
         @Override
         public void run() {
             audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC), 0);
+            mediaPlayer = MediaPlayer.create(HomePage.this, R.raw.siren);
             mediaPlayer.start();
             if (ActivityCompat.checkSelfPermission(HomePage.this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.checkSelfPermission(HomePage.this, Manifest.permission.ACCESS_COARSE_LOCATION);
@@ -194,10 +193,12 @@ public class HomePage extends AppCompatActivity {
         if (pass.equals(truePass)) {
             handler.removeCallbacks(panicRunnable);
             mediaPlayer.stop();
+            cnt=0;
             Toast.makeText(HomePage.this, "true pass!", Toast.LENGTH_SHORT).show();
         } else if (pass.equals(falsePass)) {
             handler.removeCallbacks(panicRunnable);
             mediaPlayer.stop();
+            cnt=0;
             Toast.makeText(HomePage.this, "false pass!", Toast.LENGTH_SHORT).show();
             silentPanic.run();
         } else {

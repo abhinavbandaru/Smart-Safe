@@ -26,23 +26,26 @@ public class MainActivity extends AppCompatActivity {
     String[] permissions = {"android.permission.READ_EXTERNAL_STORAGE",
             "android.permission.WRITE_EXTERNAL_STORAGE", "android.permission.ACCESS_FINE_LOCATION",
             "android.permission.SEND_SMS", "android.permission.INTERNET",
-            "android.permission.ACCESS_COARSE_LOCATION",};
+            "android.permission.ACCESS_COARSE_LOCATION"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         checkPermission();
+        if(isSignedIn()){
+            Intent intent = new Intent(MainActivity.this, HomePage.class);
+            startActivity(intent);
+        }
         googleSignInButton = (SignInButton) findViewById(R.id.sign_in_button);
         googleSignInButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                switch (view.getId()){
-                    case R.id.sign_in_button:
-                        signIn();
-                        break;
+                if (view.getId() == R.id.sign_in_button) {
+                    signIn();
                 }
             }
         });
+
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestEmail()
                 .build();
@@ -57,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
+    }
+
+    private boolean isSignedIn() {
+        return GoogleSignIn.getLastSignedInAccount(MainActivity.this) != null;
     }
 
     @Override

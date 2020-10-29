@@ -1,0 +1,7 @@
+<!-- Mask Group -->
+<View
+android:id="@+id/mask_group"
+android:layout_width="360dp"
+android:layout_height="640dp"
+android:background="#00000000"
+ />
